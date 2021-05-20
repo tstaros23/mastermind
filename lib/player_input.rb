@@ -1,7 +1,11 @@
 require 'pry'
 
 class PlayerInput
-  def initialize
+
+  attr_reader
+  def initialize(input,player_input)
+    @player_input = @player_input
+    @input = input
 
   end
 
