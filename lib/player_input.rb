@@ -1,12 +1,10 @@
 require 'pry'
 
 class PlayerInput
+  attr_reader :input
 
-  attr_reader
-  def initialize(input,player_input)
-    @player_input = @player_input
-    @input = input
-
+  def initialize(input)
+    @input = input.upcase.split("")
   end
 
 end
