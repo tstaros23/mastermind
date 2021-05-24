@@ -19,14 +19,20 @@ RSpec.describe 'CompareColor' do
   it "Has things to compare" do
     compare_color = CompareColor.new(@player_input, @answer)
 
-    expect(compare_color.players_answer.input).to eq (["R", "G", "B", "Y"])
-    expect(compare_color.winning_answer.answer).to eq (["R", "R", "B", "G"])
+    expect(compare_color.players_answer).to eq (["R", "G", "B", "Y"])
+    expect(compare_color.winning_answer).to eq (["R", "R", "B", "G"])
   end
 
   it "Can compare colors" do
     compare_color = CompareColor.new(@player_input, @answer)
 
     expect(compare_color.correct_colors).to eq(3)
+  end
+
+  it "can compare correct colors in correct positions" do
+    compare_color = CompareColor.new(@player_input, @answer)
+    # require 'pry'; binding.pry
+    expect(compare_color.correct_positions).to eq(2)
   end
 
 end
