@@ -16,7 +16,7 @@ class Statement
     "The answer is made up of a random combination of (r)ed, (g)reen, (b)lue, and (y)ellow. \n" +
     "The player, again you, needs to guess the correct position of all colors of the answer. \n" +
     "\n" +
-    "To return to main menu, push enter. If you want to (q)uit, push q."
+    "To return to main menu, push any key."
   end
 
   def main_menu
