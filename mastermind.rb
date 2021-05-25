@@ -1,18 +1,8 @@
-print "Start message"
+require 'rspec'
+require './lib/statement'
+require './lib/game'
+require './lib/player_input'
 
-input
+mastermind = Game.new
 
-# if p, start game message, ask for input
-#  if run player_input(input)
-#  if right answer
-#    congratulations message
-#   elsif wrong answer
-#     another message
-#     run player_input again, loop to line 7
-# elsif i
-#   return instructions
-# elsif q
-#   quits
-# else
-#   loops back to beginning
-# end
+mastermind.main_menu_interaction
