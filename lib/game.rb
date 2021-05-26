@@ -26,6 +26,12 @@ class Game
 
   private #anything past here cannot be called by someone trying to access in terminal
 
+  def game_player_input
+    @statement.get_player_input
+    @player_answer = PlayerInput.new(@statement.input)
+    @compare_color = CompareColor.new(@player_answer, @winning_answer)
+  end
+
   def start_game_flow #only runs once
     # method starts game logic for player, and executes essential processes like tracking
     # time, getting player input, generating the random winning answer(only once), and 
@@ -33,11 +39,9 @@ class Game
     system "clear"
     @start = Process.clock_gettime(Process::CLOCK_MONOTONIC) #<< we only want once
     @winning_answer = WinningCombo.new #<< we only want once
+    @guesses += 1 #<< only want to run once for start game flow
     @statement.print_to_terminal(@statement.game_flow)
-    @statement.get_player_input
-    @player_answer = PlayerInput.new(@statement.input)
-    @compare_color = CompareColor.new(@player_answer, @winning_answer)
-    @guesses += 1
+    game_player_input
     if (@statement.input == "Q") || (@statement.input == "QUIT")
       quit_message
     elsif (@statement.input == "C") || (@statement.input == "CHEAT")
@@ -56,9 +60,7 @@ class Game
   end
 
   def wrong_guess_game_flow # runs as long as player guesses wrong(loops)
-    @statement.get_player_input
-    @player_answer = PlayerInput.new(@statement.input)
-    @compare_color = CompareColor.new(@player_answer, @winning_answer)
+    game_player_input
     if (@statement.input == "Q") || (@statement.input == "QUIT")
       quit_message
     elsif (@statement.input == "C") || (@statement.input == "CHEAT")
@@ -102,7 +104,7 @@ class Game
     system "clear"
     finish = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     elapsed = finish - @start
-    @statement.print_to_terminal(@statement.winning_message(@winning_answer.answer, @guesses, elapsed))
+    @statement.print_to_terminal(@statement.winning_message(@winning_answer.answer, @guesses, elapsed.round(1)))
     @statement.get_player_input
     @guesses = 0
     if (@statement.input == "P") || (@statement.input == "PLAY")
