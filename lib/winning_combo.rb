@@ -1,5 +1,3 @@
-require 'pry'
-
 class WinningCombo
   attr_reader :answer
   def initialize

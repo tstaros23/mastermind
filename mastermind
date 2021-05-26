@@ -1,7 +1,5 @@
-require 'rspec'
-require './lib/statement'
+#!/usr/bin/ruby
 require './lib/game'
-require './lib/player_input'
 
 mastermind = Game.new
 

@@ -1,6 +1,7 @@
 require './lib/player_input'
 require './lib/compare_color'
 require './lib/winning_combo'
+require './lib/game'
 
 class Statement
   attr_reader :input
@@ -47,10 +48,12 @@ class Statement
     "\n"
   end
 
-  def player_wrong_turn
-    "'RRGB' has 3 of the correct elements with 2 in the correct positions. \n" +
-    "You've taken 1 guess"
+  def player_wrong_turn(player_answer, correct_colors, correct_positions, guesses)
+    "\n" +
+    "#{player_answer} has #{correct_colors} of the correct elements with #{correct_positions} in the correct positions. \n" +
+    "You've taken #{guesses} guess(es)"
   end
+
   def print_to_terminal(statement)
     puts statement
   end
@@ -61,9 +64,8 @@ class Statement
     "Sick bro! You'll be back! ;D"
   end
 
-  def winning_message
-    "Congratulations! You guessed the sequence 'GRRB' in 8 guesses over 4 minutes, \n" +
-    "22 seconds. \n" +
+  def winning_message(winning_answer, guesses, time)
+    "Congratulations! You guessed the sequence '#{winning_answer.join("")}' in #{guesses} guesses over #{time} \n" +
     "\n" +
     "Do you want to (p)lay again or (q)uit?"
   end
@@ -76,6 +78,7 @@ class Statement
   end
 
   def wrong_length
+    "\n" +
     "Your answer is the wrong length \n"
   end
 end
