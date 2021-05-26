@@ -24,17 +24,24 @@ class Game
     end
   end
 
-  private
+  private #anything past here cannot be called by someone trying to access in terminal
 
-  def start_game_flow
-    system "clear"
-    @start = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-    @winning_answer = WinningCombo.new
-    @statement.print_to_terminal(@statement.game_flow)
+  def game_player_input
     @statement.get_player_input
     @player_answer = PlayerInput.new(@statement.input)
     @compare_color = CompareColor.new(@player_answer, @winning_answer)
-    @guesses += 1
+  end
+
+  def start_game_flow #only runs once
+    # method starts game logic for player, and executes essential processes like tracking
+    # time, getting player input, generating the random winning answer(only once), and 
+    # breaking down the different inputs into if/elsif statements
+    system "clear"
+    @start = Process.clock_gettime(Process::CLOCK_MONOTONIC) #<< we only want once
+    @winning_answer = WinningCombo.new #<< we only want once
+    @guesses += 1 #<< only want to run once for start game flow
+    @statement.print_to_terminal(@statement.game_flow)
+    game_player_input
     if (@statement.input == "Q") || (@statement.input == "QUIT")
       quit_message
     elsif (@statement.input == "C") || (@statement.input == "CHEAT")
@@ -44,17 +51,7 @@ class Game
       @statement.print_to_terminal(@statement.wrong_length)
       wrong_guess_game_flow
     elsif @compare_color.player_answer == @compare_color.winning_answer
-      system "clear"
-      finish = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-      elapsed = finish - @start
-      @statement.print_to_terminal(@statement.winning_message(@winning_answer.answer, @guesses, elapsed))
-      @statement.get_player_input
-      @guesses = 0
-      if (@statement.input == "P") || (@statement.input == "PLAY")
-        main_menu_interaction
-      elsif (@statement.input == "Q") || (@statement.input == "QUIT")
-        quit_message
-      end
+      winning_answer_flow
     elsif @compare_color.player_answer != @compare_color.winning_answer
       @statement.print_to_terminal(@statement.player_wrong_turn(@statement.input, @compare_color.correct_colors, @compare_color.correct_positions, @guesses))
       @guesses += 1
@@ -62,10 +59,8 @@ class Game
     end
   end
 
-  def wrong_guess_game_flow
-    @statement.get_player_input
-    @player_answer = PlayerInput.new(@statement.input)
-    @compare_color = CompareColor.new(@player_answer, @winning_answer)
+  def wrong_guess_game_flow # runs as long as player guesses wrong(loops)
+    game_player_input
     if (@statement.input == "Q") || (@statement.input == "QUIT")
       quit_message
     elsif (@statement.input == "C") || (@statement.input == "CHEAT")
@@ -75,17 +70,7 @@ class Game
       @statement.print_to_terminal(@statement.wrong_length)
       wrong_guess_game_flow
     elsif @compare_color.player_answer == @compare_color.winning_answer
-      system "clear"
-      finish = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-      elapsed = finish - @start
-      @statement.print_to_terminal(@statement.winning_message(@winning_answer.answer, @guesses, elapsed))
-      @statement.get_player_input
-      @guesses = 0
-      if (@statement.input == "P") || (@statement.input == "PLAY")
-        main_menu_interaction
-      elsif (@statement.input == "Q") || (@statement.input == "QUIT")
-        quit_message
-      end
+      winning_answer_flow
     elsif @compare_color.player_answer != @compare_color.winning_answer
       @statement.print_to_terminal(@statement.player_wrong_turn(@statement.input, @compare_color.correct_colors, @compare_color.correct_positions, @guesses))
       @guesses += 1
@@ -113,6 +98,20 @@ class Game
     @statement.print_to_terminal(@statement.quit_message)
     sleep 3
     system "clear"
+  end
+
+  def winning_answer_flow
+    system "clear"
+    finish = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    elapsed = finish - @start
+    @statement.print_to_terminal(@statement.winning_message(@winning_answer.answer, @guesses, elapsed.round(1)))
+    @statement.get_player_input
+    @guesses = 0
+    if (@statement.input == "P") || (@statement.input == "PLAY")
+      main_menu_interaction
+    elsif (@statement.input == "Q") || (@statement.input == "QUIT")
+      quit_message
+    end
   end
 
   def wrong_input
