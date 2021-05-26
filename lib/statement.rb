@@ -65,7 +65,7 @@ class Statement
   end
 
   def winning_message(winning_answer, guesses, time)
-    "Congratulations! You guessed the sequence '#{winning_answer.join("")}' in #{guesses} guesses over #{time} \n" +
+    "Congratulations! You guessed the sequence '#{winning_answer.join("")}' in #{guesses} guesses over #{time} seconds! \n" +
     "\n" +
     "Do you want to (p)lay again or (q)uit?"
   end
