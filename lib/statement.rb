@@ -1,8 +1,18 @@
+require './lib/player_input'
+require './lib/compare_color'
+require './lib/winning_combo'
+
 class Statement
   attr_reader :input
 
   def initialize
     @input = ''
+  end
+
+  def game_flow
+    "I have generated a beginner sequence with four elements made up of: (r)ed, \n" +
+    "(g)reen, (b)lue, and (y)ellow. Use (q)uit at any time to end the game. \n" +
+    "What's your guess? \n"
   end
 
   def get_player_input
@@ -37,8 +47,25 @@ class Statement
     "\n"
   end
 
+  def player_wrong_turn
+    "'RRGB' has 3 of the correct elements with 2 in the correct positions. \n" +
+    "You've taken 1 guess"
+  end
   def print_to_terminal(statement)
     puts statement
+  end
+
+  def quit_message
+    "\n" +
+    "\n" +
+    "Sick bro! You'll be back! ;D"
+  end
+
+  def winning_message
+    "Congratulations! You guessed the sequence 'GRRB' in 8 guesses over 4 minutes, \n" +
+    "22 seconds. \n" +
+    "\n" +
+    "Do you want to (p)lay again or (q)uit?"
   end
 
   def wrong_input
@@ -46,5 +73,9 @@ class Statement
     "Your input is not recognised... try again!" +
     "\n" +
     "\n"
+  end
+
+  def wrong_length
+    "Your answer is the wrong length \n"
   end
 end

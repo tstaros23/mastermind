@@ -2,10 +2,10 @@ require './lib/winning_combo'
 require './lib/player_input'
 
 class CompareColor
-  attr_reader :players_answer, :winning_answer,
+  attr_reader :player_answer, :winning_answer,
               :correct_colors, :correct_positions
-  def initialize(players_answer, winning_answer)
-    @players_answer = players_answer.input
+  def initialize(player_answer, winning_answer)
+    @player_answer = player_answer.input
     @winning_answer = winning_answer.answer
     @correct_colors = 0
     @correct_positions = 0
@@ -13,11 +13,11 @@ class CompareColor
   end
 
   def correct_colors_positions
-    @players_answer.each_with_index do |color, index|
+    @player_answer.each_with_index do |color, index|
       if @winning_answer.include? color
         @correct_colors += 1
         # if the position is correct, add to second count
-        if @winning_answer[index] == @players_answer[index]
+        if @winning_answer[index] == @player_answer[index]
           @correct_positions += 1
         end
       end
