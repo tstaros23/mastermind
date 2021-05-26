@@ -1,7 +1,7 @@
 require 'rspec'
 require './lib/winning_combo'
 require './lib/player_input'
-require './lib/compare_color'
+require './lib/compare_color_position'
 
 RSpec.describe 'CompareColor' do
   before do

@@ -1,5 +1,5 @@
 require './lib/player_input'
-require './lib/compare_color'
+require './lib/compare_color_position'
 require './lib/winning_combo'
 require './lib/game'
 

@@ -1,6 +1,6 @@
 require './lib/statement'
 require './lib/player_input'
-require './lib/compare_color'
+require './lib/compare_color_position'
 require './lib/winning_combo'
 
 
@@ -13,11 +13,11 @@ class Game
 
   def main_menu_interaction
     mastermind_intro
-    if @statement.input == "P"
+    if (@statement.input == "P") || (@statement.input == "PLAY")
       start_game_flow
-    elsif @statement.input == "I"
+    elsif (@statement.input == "I") || (@statement.input == "INSTRUCTIONS")
       instructions
-    elsif @statement.input == "Q"
+    elsif (@statement.input == "Q") || (@statement.input == "QUIT")
       quit_message
     else
       wrong_input
@@ -35,8 +35,11 @@ class Game
     @player_answer = PlayerInput.new(@statement.input)
     @compare_color = CompareColor.new(@player_answer, @winning_answer)
     @guesses += 1
-    if @statement.input == "Q"
+    if (@statement.input == "Q") || (@statement.input == "QUIT")
       quit_message
+    elsif (@statement.input == "C") || (@statement.input == "CHEAT")
+      puts @compare_color.winning_answer.join("")
+      wrong_guess_game_flow
     elsif @compare_color.player_answer.length > 4 || @compare_color.player_answer.length < 4
       @statement.print_to_terminal(@statement.wrong_length)
       wrong_guess_game_flow
@@ -47,9 +50,9 @@ class Game
       @statement.print_to_terminal(@statement.winning_message(@winning_answer.answer, @guesses, elapsed))
       @statement.get_player_input
       @guesses = 0
-      if @statement.input == "P"
+      if (@statement.input == "P") || (@statement.input == "PLAY")
         main_menu_interaction
-      elsif @statement.input == "Q"
+      elsif (@statement.input == "Q") || (@statement.input == "QUIT")
         quit_message
       end
     elsif @compare_color.player_answer != @compare_color.winning_answer
@@ -63,8 +66,11 @@ class Game
     @statement.get_player_input
     @player_answer = PlayerInput.new(@statement.input)
     @compare_color = CompareColor.new(@player_answer, @winning_answer)
-    if @statement.input == "Q"
+    if (@statement.input == "Q") || (@statement.input == "QUIT")
       quit_message
+    elsif (@statement.input == "C") || (@statement.input == "CHEAT")
+      puts @compare_color.winning_answer.join("")
+      wrong_guess_game_flow
     elsif @compare_color.player_answer.length > 4 || @compare_color.player_answer.length < 4
       @statement.print_to_terminal(@statement.wrong_length)
       wrong_guess_game_flow
@@ -75,9 +81,9 @@ class Game
       @statement.print_to_terminal(@statement.winning_message(@winning_answer.answer, @guesses, elapsed))
       @statement.get_player_input
       @guesses = 0
-      if @statement.input == "P"
+      if (@statement.input == "P") || (@statement.input == "PLAY")
         main_menu_interaction
-      elsif @statement.input == "Q"
+      elsif (@statement.input == "Q") || (@statement.input == "QUIT")
         quit_message
       end
     elsif @compare_color.player_answer != @compare_color.winning_answer
