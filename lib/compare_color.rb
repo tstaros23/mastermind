@@ -9,14 +9,21 @@ class CompareColor
     @winning_answer = winning_answer.answer
     @correct_colors = 0
     @correct_positions = 0
-    correct_colors_positions
+    correct_color
+    correct_position
   end
 
-  def correct_colors_positions
-    @player_answer.each_with_index do |color, index|
+  def correct_color
+    @player_answer.each do |color|
       if @winning_answer.include? color
         @correct_colors += 1
-        # if the position is correct, add to second count
+      end
+    end
+  end
+
+  def correct_position
+    @player_answer.each_with_index do |color, index|
+      if @winning_answer.include? color
         if @winning_answer[index] == @player_answer[index]
           @correct_positions += 1
         end

@@ -1,5 +1,3 @@
-require 'pry'
-
 class PlayerInput
   attr_reader :input
 

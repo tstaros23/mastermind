@@ -28,26 +28,39 @@ class Game
 
   def start_game_flow
     system "clear"
+    @start = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     @winning_answer = WinningCombo.new
     @statement.print_to_terminal(@statement.game_flow)
-    @statement.print_to_terminal(@statement.get_player_input)
+    @statement.get_player_input
     @player_answer = PlayerInput.new(@statement.input)
     @compare_color = CompareColor.new(@player_answer, @winning_answer)
+    @guesses += 1
     if @statement.input == "Q"
       quit_message
     elsif @compare_color.player_answer.length > 4 || @compare_color.player_answer.length < 4
       @statement.print_to_terminal(@statement.wrong_length)
       wrong_guess_game_flow
     elsif @compare_color.player_answer == @compare_color.winning_answer
-       @statement.print_to_terminal(@statement.winning_message)
+      system "clear"
+      finish = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      elapsed = finish - @start
+      @statement.print_to_terminal(@statement.winning_message(@winning_answer.answer, @guesses, elapsed))
+      @statement.get_player_input
+      @guesses = 0
+      if @statement.input == "P"
+        main_menu_interaction
+      elsif @statement.input == "Q"
+        quit_message
+      end
     elsif @compare_color.player_answer != @compare_color.winning_answer
-      @statement.print_to_terminal(@statement.player_wrong_turn)
-      wrong_guess_game_flow 
+      @statement.print_to_terminal(@statement.player_wrong_turn(@statement.input, @compare_color.correct_colors, @compare_color.correct_positions, @guesses))
+      @guesses += 1
+      wrong_guess_game_flow
     end
   end
 
   def wrong_guess_game_flow
-    @statement.print_to_terminal(@statement.get_player_input)
+    @statement.get_player_input
     @player_answer = PlayerInput.new(@statement.input)
     @compare_color = CompareColor.new(@player_answer, @winning_answer)
     if @statement.input == "Q"
@@ -56,9 +69,20 @@ class Game
       @statement.print_to_terminal(@statement.wrong_length)
       wrong_guess_game_flow
     elsif @compare_color.player_answer == @compare_color.winning_answer
-      @statement.print_to_terminal(@statement.winning_message)
+      system "clear"
+      finish = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      elapsed = finish - @start
+      @statement.print_to_terminal(@statement.winning_message(@winning_answer.answer, @guesses, elapsed))
+      @statement.get_player_input
+      @guesses = 0
+      if @statement.input == "P"
+        main_menu_interaction
+      elsif @statement.input == "Q"
+        quit_message
+      end
     elsif @compare_color.player_answer != @compare_color.winning_answer
-      @statement.print_to_terminal(@statement.player_wrong_turn)
+      @statement.print_to_terminal(@statement.player_wrong_turn(@statement.input, @compare_color.correct_colors, @compare_color.correct_positions, @guesses))
+      @guesses += 1
       wrong_guess_game_flow
     end
   end
@@ -66,7 +90,7 @@ class Game
   def instructions
     system "clear"
     @statement.print_to_terminal(@statement.instructions)
-    @statement.print_to_terminal(@statement.get_player_input)
+    @statement.get_player_input
     return main_menu_interaction if @statement.input != nil
   end
 
@@ -74,7 +98,7 @@ class Game
     system "clear"
     @statement.print_to_terminal(@statement.mastermind_art)
     @statement.print_to_terminal(@statement.main_menu)
-    @statement.print_to_terminal(@statement.get_player_input)
+    @statement.get_player_input
   #making the Statement class an instance variable within the Game class will let us use the methods 
   #that come with the Statement class that are outside of the global scope
   end
